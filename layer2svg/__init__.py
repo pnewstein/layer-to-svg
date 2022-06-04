@@ -76,7 +76,7 @@ def get_layers_to_remove(root: ET.ElementTree, mode: Mode, verbose: Optional[boo
             if len(layers_to_keep) == 0:
                 continue
             for l_to_keep in layers_to_keep:
-                layers_copy.remove(layers_to_keep)
+                layers_copy.remove(l_to_keep)
             out[num] = layers_copy
     return out
 
