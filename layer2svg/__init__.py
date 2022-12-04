@@ -37,13 +37,14 @@ def get_layers_to_remove(root: ET.ElementTree, mode: Mode, verbose: Optional[boo
     """
     if verbose is None:
         verbose = False
-    all_layers = [
+    all_layers_null = [
         g.get('{http://www.inkscape.org/namespaces/inkscape}label')
         for g in root.findall('{http://www.w3.org/2000/svg}g')
     ]
-    for layer in all_layers:
+    for layer in all_layers_null:
         if layer is None:
             raise ValueError("Layer parse failure")
+    all_layers: list[str] = all_layers_null # type: ignore
 
     if verbose:
         print(all_layers)
@@ -66,7 +67,7 @@ def get_layers_to_remove(root: ET.ElementTree, mode: Mode, verbose: Optional[boo
 
     if mode == Mode.number:
         # remove background layers
-        all_layers, background_layers = clear_background(all_layers, verbose=verbose)
+        all_layers, _ = clear_background(all_layers, verbose=verbose)
 
         # build out
         for num in "1234567890":
@@ -100,7 +101,7 @@ def write_layers(layers_to_remove: dict[str, list[str]], tree: ET.ElementTree, e
 
 def layer2svg(file_path: Path, export_folder: Optional[Path] = None, mode: Optional[Mode] = None): 
     if export_folder is None:
-        export_folder = Path(file_path.with_suffix(""))
+        export_folder = Path() / file_path.with_suffix("").name
     if mode is None:
         mode = Mode.layer
 
