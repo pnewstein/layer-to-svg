@@ -41,10 +41,7 @@ def get_layers_to_remove(root: ET.ElementTree, mode: Mode, verbose: Optional[boo
         g.get('{http://www.inkscape.org/namespaces/inkscape}label')
         for g in root.findall('{http://www.w3.org/2000/svg}g')
     ]
-    for layer in all_layers_null:
-        if layer is None:
-            raise ValueError("Layer parse failure")
-    all_layers: list[str] = all_layers_null # type: ignore
+    all_layers: list[str] = [l for l in all_layers_null if l is not None]
 
     if verbose:
         print(all_layers)
