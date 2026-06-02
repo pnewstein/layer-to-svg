@@ -105,7 +105,7 @@ def layer2svg(file_path: Path, export_folder: Optional[Path] = None, mode: Optio
     tree = ET.parse(file_path)
     layers_to_remove = get_layers_to_remove(tree, mode)
     print(layers_to_remove)
-    export_folder.mkdir(exist_ok=True)
+    export_folder.mkdir(exist_ok=True, parents=True)
     write_layers(layers_to_remove, tree, export_folder)
 
 
